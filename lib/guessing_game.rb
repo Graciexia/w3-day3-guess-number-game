@@ -14,6 +14,8 @@ class Guessing_game
 
   def start_game
     get_random_number
+    @low_difference = 100
+    @high_difference = 100
     @guesses = []
     (1..5).each do |x|
       get_guess
@@ -44,12 +46,28 @@ class Guessing_game
 
   def is_winner?
     difference = @action - @random_number
-    if difference > 30 then puts "That is way too high!"
-    elsif difference > 10 then puts "That is close, but too high!"
-    elsif difference > 0 then puts "Very close, but too high!"
-    elsif difference < -30 then puts "That is way too low!"
-    elsif difference < -10 then puts "That is close, but too low!"
-    elsif difference < 0 then puts "Very close, but too low!"
+    if difference > 0
+      if difference.abs >= @high_difference.abs
+        puts "You are wasting your time!"
+      else
+        @high_difference = difference.abs
+        if difference > 30 then puts "That is way too high!"
+        elsif difference > 10 then puts "That is close, but too high!"
+        else
+          puts "Very close, but too high!"
+        end
+      end
+    elsif difference < 0
+      if difference.abs >= @low_difference.abs
+        puts "You are wasting your time!"
+      else
+        @low_difference = difference.abs
+        if difference < -30 then puts "That is way too low!"
+        elsif difference < -10 then puts "That is close, but too low!"
+        else
+          puts "Very close, but too low!"
+        end
+      end
     else
       puts "That is it. You win!"
       return true
